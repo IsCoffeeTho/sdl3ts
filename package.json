@@ -1,0 +1,17 @@
+{
+  "name": "sdl3ts",
+  "version": "",
+  "module": "src/sdl3.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run build && bun examples/primitives.ts",
+    "build": "bunx node-gyp build"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true
+}

@@ -1,0 +1,1 @@
+export type Pointer<T extends any = any> = bigint | null; // T is unused but provides context

@@ -1,6 +1,4 @@
 #include "../sdl3ts.h"
-#include <SDL3/SDL_error.h>
-#include <node/js_native_api.h>
 
 napi_value SDL_Init_wrapper(napi_env env, napi_callback_info info)
 {

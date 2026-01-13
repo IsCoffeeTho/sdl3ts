@@ -1,8 +1,4 @@
 #include "../sdl3ts.h"
-#include <SDL3/SDL_video.h>
-#include <node/js_native_api.h>
-#include <stdint.h>
-#include <stdlib.h>
 
 napi_value SDL_CreateWindow_wrapper(napi_env env, napi_callback_info info)
 {

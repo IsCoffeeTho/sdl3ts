@@ -1,9 +1,11 @@
 import { PollEvent, SDLEventType, type SDLEvent } from "./events/events";
 import Window from "./window/window";
+import Rect from "./primitives/Rect";
+import Point from "./primitives/Point";
 
 export const sdl3_native = (() => require("../build/Release/sdl3ts.node"))();
 
-export { SDLEventType, type SDLEvent };
+export { SDLEventType, type SDLEvent, Rect, Point};
 
 export const SDL3 = {
 	Init(options?: {
@@ -30,8 +32,7 @@ export const SDL3 = {
 		init_flag |= options?.events ? 0x4000 : 0;
 		init_flag |= options?.sensor ? 0x8000 : 0;
 
-		if (!sdl3_native.SDL_Init(init_flag))
-			throw sdl3_native.SDL_GetError();
+		if (!sdl3_native.SDL_Init(init_flag)) throw sdl3_native.SDL_GetError();
 
 		process.on("beforeExit", () => {
 			sdl3_native.SDL_Quit();

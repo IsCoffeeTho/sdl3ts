@@ -1,0 +1,77 @@
+import { Rect, SDL3, SDLEventType } from "../../src/sdl3";
+
+SDL3.Init({
+	video: true,
+});
+
+const WINDOW_WIDTH = 640;
+const WINDOW_HEIGHT = 480;
+
+const window = new SDL3.Window({
+	width: 640,
+	height: 480,
+});
+const renderer = window.renderer;
+
+const rects: Rect[] = [];
+
+for (var i = 0; i < 16; i++) {
+	rects[i] = new Rect();
+}
+
+while (true) {
+	var event = SDL3.PollEvent();
+	if (event) {
+		if (event.type == SDLEventType.Quit) break;
+	}
+
+	const now = Date.now();
+
+	renderer.setDrawColor(0, 0, 0);
+	renderer.clear();
+
+	const direction = now % 2000 >= 1000 ? 1.0 : -1.0;
+	const scale = (((now % 1000) - 500) / 500) * direction;
+
+	renderer.setDrawColor(0, 0, 0);
+	renderer.clear();
+
+	let rect = <Rect>rects[0];
+
+	rect.x = rect.y = 100;
+	rect.w = rect.h = 100 + 100 * scale;
+	renderer.setDrawColor(255, 0, 0);
+	renderer.rect(rect);
+
+	for (i = 0; i < 3; i++) {
+		const size = (i + 1) * 50.0;
+		let rect = <Rect>rects[i];
+		rect.w = rect.h = size + size * scale;
+		rect.x = (WINDOW_WIDTH - rect.w) / 2;
+		rect.y = (WINDOW_HEIGHT - rect.h) / 2;
+	}
+	renderer.setDrawColor(0, 255, 0);
+	renderer.rects(rects.slice(0, 3));
+
+	rect.x = 400;
+	rect.y = 50;
+	rect.w = 100 + 100 * scale;
+	rect.h = 50 + 50 * scale;
+	renderer.setDrawColor(0, 0, 255);
+	renderer.fillRect(rect);
+
+	for (i = 0; i < rects.length; i++) {
+		const w = WINDOW_WIDTH / rects.length;
+		const h = i * 8.0;
+		let rect = <Rect>rects[i];
+		rect.x = i * w;
+		rect.y = WINDOW_HEIGHT - h;
+		rect.w = w;
+		rect.h = h;
+	}
+	renderer.setDrawColor(255, 255, 255);
+	renderer.fillRects(rects);
+
+	renderer.present();
+	await Bun.sleep(1);
+}

@@ -4,7 +4,7 @@
   "module": "src/sdl3.ts",
   "type": "module",
   "scripts": {
-    "start": "bun run build && bun examples/primitives.ts",
+    "start": "bun run build && bun examples/renderer/05-rectangles.ts",
     "build": "bunx node-gyp build"
   },
   "devDependencies": {

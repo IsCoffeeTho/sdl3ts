@@ -1,9 +1,5 @@
 #include "../sdl3ts.h"
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_video.h>
 #include <node/js_native_api.h>
-#include <stdint.h>
-#include <stdlib.h>
 
 napi_value SDL_CreateRenderer_wrapper(napi_env env, napi_callback_info info)
 {
@@ -138,6 +134,100 @@ napi_value SDL_SetRenderDrawColor_wrapper(napi_env env, napi_callback_info info)
 	return retval;
 }
 
+napi_value SDL_RenderFillRect_wrapper(napi_env env, napi_callback_info info)
+{
+	napi_value retval = NULL;
+	size_t argc = 2;
+	napi_value argv[2];
+	napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+
+	SDL_Renderer *renderer;
+	napi_get_value_pointer(env, argv[0], (void *)&renderer);
+	if (!renderer)
+	{
+		napi_throw_error(env, "Error", "Renderer: Use after free");
+		return retval;
+	}
+	SDL_FRect rect;
+	napi_get_value_rect(env, argv[1], &rect);
+	
+	SDL_RenderFillRect(renderer, &rect);
+	
+	return retval;
+}
+
+napi_value SDL_RenderRect_wrapper(napi_env env, napi_callback_info info)
+{
+	napi_value retval = NULL;
+	size_t argc = 2;
+	napi_value argv[2];
+	napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+
+	SDL_Renderer *renderer;
+	napi_get_value_pointer(env, argv[0], (void *)&renderer);
+	if (!renderer)
+	{
+		napi_throw_error(env, "Error", "Renderer: Use after free");
+		return retval;
+	}
+	SDL_FRect rect;
+	napi_get_value_rect(env, argv[1], &rect);
+	
+	SDL_RenderRect(renderer, &rect);
+	
+	return retval;
+}
+
+napi_value SDL_RenderPoint_wrapper(napi_env env, napi_callback_info info)
+{
+	napi_value retval = NULL;
+	size_t argc = 2;
+	napi_value argv[2];
+	napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+
+	SDL_Renderer *renderer;
+	napi_get_value_pointer(env, argv[0], (void *)&renderer);
+	if (!renderer)
+	{
+		napi_throw_error(env, "Error", "Renderer: Use after free");
+		return retval;
+	}
+	SDL_Point point;
+	napi_get_value_point(env, argv[1], &point);
+	
+	SDL_RenderPoint(renderer, point.x, point.y);
+	
+	return retval;
+}
+
+napi_value SDL_RenderLine_wrapper(napi_env env, napi_callback_info info)
+{
+	napi_value retval = NULL;
+	size_t argc = 5;
+	napi_value argv[5];
+	napi_get_cb_info(env, info, &argc, argv, NULL, NULL);
+
+	SDL_Renderer *renderer;
+	napi_get_value_pointer(env, argv[0], (void *)&renderer);
+	if (!renderer)
+	{
+		napi_throw_error(env, "Error", "Renderer: Use after free");
+		return retval;
+	}
+	double x1;
+	napi_get_value_double(env, argv[1], &x1);
+	double y1;
+	napi_get_value_double(env, argv[2], &y1);
+	double x2;
+	napi_get_value_double(env, argv[3], &x2);
+	double y2;
+	napi_get_value_double(env, argv[4], &y2);
+	
+	SDL_RenderLine(renderer, x1, y1, x2, y2);
+	
+	return retval;
+}
+
 napi_value export_renderer(napi_env env, napi_value exports)
 {
 	export_fn(env, exports, "SDL_CreateRenderer", SDL_CreateRenderer_wrapper);
@@ -148,6 +238,13 @@ napi_value export_renderer(napi_env env, napi_value exports)
 
 	export_fn(env, exports, "SDL_RenderClear", SDL_RenderClear_wrapper);
 	export_fn(env, exports, "SDL_RenderPresent", SDL_RenderPresent_wrapper);
+	
+	export_fn(env, exports, "SDL_RenderFillRect", SDL_RenderFillRect_wrapper);
+	export_fn(env, exports, "SDL_RenderRect", SDL_RenderRect_wrapper);
+	
+	export_fn(env, exports, "SDL_RenderPoint", SDL_RenderPoint_wrapper);
+	
+	export_fn(env, exports, "SDL_RenderLine", SDL_RenderLine_wrapper);
 
 	return exports;
 }

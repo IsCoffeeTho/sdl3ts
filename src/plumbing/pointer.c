@@ -1,6 +1,4 @@
 #include "../sdl3ts.h"
-#include <node/js_native_api.h>
-#include <node/js_native_api_types.h>
 
 napi_status napi_create_pointer(napi_env env, void *ptr, napi_value *result) {
 	if (!ptr)

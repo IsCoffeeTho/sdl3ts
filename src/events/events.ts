@@ -187,6 +187,8 @@ export type KeyboardEvent = SDLCommonEvent<SDLEventType.KeyDown | SDLEventType.K
 	repeat: boolean;
 };
 
+export type KboardEvent = KeyboardDeviceEvent | KeyboardEvent | TextEditingEvent | TextEditingCandidatesEvent;
+
 export type TextEditingEvent = SDLCommonEvent<SDLEventType.TextEditing> & {
 	windowId: number;
 	text: string;
@@ -241,18 +243,55 @@ export type MouseWheelEvent = SDLCommonEvent<SDLEventType.MouseWheel> & {
 	integer_y: number;
 };
 
-export type SDLEvent =
-	| CommonEvent
-	| DisplayEvent
-	| WindowEvent
-	| KeyboardDeviceEvent
-	| KeyboardEvent
-	| TextEditingEvent
-	| TextEditingCandidatesEvent
-	| MouseDeviceEvent
-	| MouseMotionEvent
-	| MouseButtonEvent
-	| MouseWheelEvent;
+export type MouseEvent = MouseDeviceEvent | MouseMotionEvent | MouseButtonEvent | MouseWheelEvent;
+
+export type JoyAxisEvent = SDLCommonEvent<SDLEventType.JoystickAxisMotion> & {
+	which: number;
+	axis: number;
+	value: number;
+};
+
+export type JoyBallEvent = SDLCommonEvent<SDLEventType.JoystickBallMotion> & {
+	which: number;
+	ball: number;
+	xrel: number;
+	yrel: number;
+};
+
+export type JoyHatEvent = SDLCommonEvent<SDLEventType.JoystickHatMotion> & {
+	which: number;
+	hat: number;
+	value: number;
+};
+
+export type JoyButtonEvent = SDLCommonEvent<SDLEventType.JoystickButtonDown | SDLEventType.JoystickButtonUp> & {
+	which: number;
+	button: number;
+	down: boolean;
+};
+
+export type JoyDeviceEvent = SDLCommonEvent<SDLEventType.JoystickAdded | SDLEventType.JoystickRemoved | SDLEventType.JoystickUpdateComplete> & {
+	which: number;
+};
+
+export enum JoyBatteryState {
+	Error = -1,
+	Unknown,
+	OnBattery,
+	NoBattery,
+	Charging,
+	Charged,
+}
+
+export type JoyBatteryEvent = SDLCommonEvent<SDLEventType.JoystickAdded | SDLEventType.JoystickRemoved | SDLEventType.JoystickUpdateComplete> & {
+	which: number;
+	state: JoyBatteryState;
+	percent: number;
+};
+
+export type JoystickEvent = JoyAxisEvent | JoyBallEvent | JoyHatEvent | JoyButtonEvent | JoyDeviceEvent | JoyBatteryEvent;
+
+export type SDLEvent = CommonEvent | DisplayEvent | WindowEvent | KboardEvent | MouseEvent | JoystickEvent;
 
 export function PollEvent(): SDLEvent | undefined {
 	var event = sdl3_native.SDL_PollEvent();

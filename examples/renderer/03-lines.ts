@@ -1,4 +1,4 @@
-import { Point, SDL3, SDLEventType } from "../../src/sdl3";
+import * as SDL3 from "../../src/sdl3";
 
 SDL3.Init({
 	video: true,
@@ -10,22 +10,22 @@ const window = new SDL3.Window({
 });
 const renderer = window.renderer;
 
-const line_points: Point[] = [
-	new Point(100, 354),
-	new Point(220, 230),
-	new Point(140, 230),
-	new Point(320, 100),
-	new Point(500, 230),
-	new Point(420, 230),
-	new Point(540, 354),
-	new Point(400, 354),
-	new Point(100, 354),
+const line_points: SDL3.Point[] = [
+	new SDL3.Point(100, 354),
+	new SDL3.Point(220, 230),
+	new SDL3.Point(140, 230),
+	new SDL3.Point(320, 100),
+	new SDL3.Point(500, 230),
+	new SDL3.Point(420, 230),
+	new SDL3.Point(540, 354),
+	new SDL3.Point(400, 354),
+	new SDL3.Point(100, 354),
 ];
 
 while (true) {
 	var event = SDL3.PollEvent();
 	if (event) {
-		if (event.type == SDLEventType.Quit) break;
+		if (event.type == SDL3.EventType.Quit) break;
 	}
 
 	renderer.setDrawColor(100, 100, 100);

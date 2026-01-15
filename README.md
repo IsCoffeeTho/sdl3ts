@@ -1,15 +1,29 @@
-# sdl3ts
+# SDL3ts
 
-To install dependencies:
+> [!warning] Work In Progress  
+> Any version prioir to `1.0.0` is going to be **unready** for production use.
 
-```bash
-bun install
+SDL3 Binding library built for the Bun runtime.
+
+```ts
+// index.ts
+import { SDL3 } from "sdl3ts";
+
+SDL3.Init({
+	video: true,
+});
+
+const win = new SDL3.Window();
+const rndr = win.renderer;
+
+while (true) {
+	var event = SDL3.PollEvent();
+	if (event && event.type == SDL3.EventType.Quit) break;
+
+	window.renderer.setDrawColor(0, 0, 0);
+	window.renderer.clear();
+
+	window.renderer.present();
+	await Bun.sleep(1);
+}
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.

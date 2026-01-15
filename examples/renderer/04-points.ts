@@ -1,4 +1,4 @@
-import { Point, SDL3, SDLEventType } from "../../src/sdl3";
+import * as SDL3 from "../../src/sdl3";
 
 SDL3.Init({
 	video: true,
@@ -17,11 +17,11 @@ const window = new SDL3.Window({
 });
 const renderer = window.renderer;
 
-let points: Point[] = [];
+let points: SDL3.Point[] = [];
 let point_speeds: number[] = [];
 
 for (let i = 0; i < NUM_POINTS; i++) {
-	points[i] = new Point(Math.random() * WINDOW_WIDTH, Math.random() * WINDOW_HEIGHT);
+	points[i] = new SDL3.Point(Math.random() * WINDOW_WIDTH, Math.random() * WINDOW_HEIGHT);
 	point_speeds[i] = MIN_PIXELS_PER_SECOND + (Math.random() * (MAX_PIXELS_PER_SECOND - MIN_PIXELS_PER_SECOND));
 }
 
@@ -29,14 +29,14 @@ let last_time = Date.now();
 while (true) {
 	var event = SDL3.PollEvent();
 	if (event) {
-		if (event.type == SDLEventType.Quit) break;
+		if (event.type == SDL3.EventType.Quit) break;
 	}
 
 	const now = Date.now();
 	const elapsed = (now - last_time) / 1000;
-    for (let i = 0; i < points.length; i++) {
+    for (let i = 0; i < NUM_POINTS; i++) {
         const distance = elapsed * <number>point_speeds[i];
-		const point = <Point>points[i];
+		const point = <SDL3.Point>points[i];
         point.x += distance;
         point.y += distance;
         if ((point.x >= WINDOW_WIDTH) || (point.y >= WINDOW_HEIGHT)) {

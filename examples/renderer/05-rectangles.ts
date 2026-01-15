@@ -1,4 +1,4 @@
-import { Rect, SDL3, SDLEventType } from "../../src/sdl3";
+import * as SDL3 from "../../src/sdl3";
 
 SDL3.Init({
 	video: true,
@@ -13,16 +13,16 @@ const window = new SDL3.Window({
 });
 const renderer = window.renderer;
 
-const rects: Rect[] = [];
+const rects: SDL3.Rect[] = [];
 
 for (var i = 0; i < 16; i++) {
-	rects[i] = new Rect();
+	rects[i] = new SDL3.Rect();
 }
 
 while (true) {
 	var event = SDL3.PollEvent();
 	if (event) {
-		if (event.type == SDLEventType.Quit) break;
+		if (event.type == SDL3.EventType.Quit) break;
 	}
 
 	const now = Date.now();
@@ -36,7 +36,7 @@ while (true) {
 	renderer.setDrawColor(0, 0, 0);
 	renderer.clear();
 
-	let rect = <Rect>rects[0];
+	let rect = <SDL3.Rect>rects[0];
 
 	rect.x = rect.y = 100;
 	rect.w = rect.h = 100 + 100 * scale;
@@ -45,7 +45,7 @@ while (true) {
 
 	for (i = 0; i < 3; i++) {
 		const size = (i + 1) * 50.0;
-		let rect = <Rect>rects[i];
+		let rect = <SDL3.Rect>rects[i];
 		rect.w = rect.h = size + size * scale;
 		rect.x = (WINDOW_WIDTH - rect.w) / 2;
 		rect.y = (WINDOW_HEIGHT - rect.h) / 2;
@@ -63,7 +63,7 @@ while (true) {
 	for (i = 0; i < rects.length; i++) {
 		const w = WINDOW_WIDTH / rects.length;
 		const h = i * 8.0;
-		let rect = <Rect>rects[i];
+		let rect = <SDL3.Rect>rects[i];
 		rect.x = i * w;
 		rect.y = WINDOW_HEIGHT - h;
 		rect.w = w;

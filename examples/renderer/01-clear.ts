@@ -1,6 +1,6 @@
-import { SDL3, SDLEventType } from "../../src/sdl3";
+import { SDL3 } from "../../sdl3.ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
@@ -10,7 +10,7 @@ const start = Date.now();
 while (true) {
 	var event = SDL3.PollEvent();
 	if (event) {
-		if (event.type == SDLEventType.Quit) break;
+		if (event.type == SDL3.EventType.Quit) break;
 	}
 	const now = (Date.now() - start) / 1000;
 

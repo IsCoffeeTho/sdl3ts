@@ -1,6 +1,6 @@
-import * as SDL3 from "../../src/sdl3";
+import SDL3 from "sdl3ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
@@ -19,10 +19,11 @@ for (var i = 0; i < 16; i++) {
 	rects[i] = new SDL3.Rect();
 }
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event) {
-		if (event.type == SDL3.EventType.Quit) break;
+let runLoop = true;
+while (runLoop) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
 
 	const now = Date.now();
@@ -41,7 +42,7 @@ while (true) {
 	rect.x = rect.y = 100;
 	rect.w = rect.h = 100 + 100 * scale;
 	renderer.setDrawColor(255, 0, 0);
-	renderer.rect(rect);
+	renderer.drawRect(rect);
 
 	for (i = 0; i < 3; i++) {
 		const size = (i + 1) * 50.0;
@@ -51,7 +52,7 @@ while (true) {
 		rect.y = (WINDOW_HEIGHT - rect.h) / 2;
 	}
 	renderer.setDrawColor(0, 255, 0);
-	renderer.rects(rects.slice(0, 3));
+	renderer.drawRects(rects.slice(0, 3));
 
 	rect.x = 400;
 	rect.y = 50;

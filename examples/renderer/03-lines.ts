@@ -1,4 +1,4 @@
-import * as SDL3 from "sdl3ts";
+import SDL3 from "sdl3ts";
 
 SDL3.init({
 	video: true,

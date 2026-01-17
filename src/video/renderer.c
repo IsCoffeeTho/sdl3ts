@@ -81,6 +81,30 @@ napi_value sdl3ts_renderer_drawRect(napi_env env, napi_callback_info info)
 	return NULL;
 }
 
+napi_value sdl3ts_renderer_drawRects(napi_env env, napi_callback_info info)
+{
+	size_t argc = 1;
+	napi_value argv[1];
+	napi_value renderer;
+	napi_get_cb_info(env, info, &argc, argv, &renderer, NULL);
+	SDL_Renderer *sdlrenderer;
+	napi_unwrap(env, renderer, (void **)&sdlrenderer);
+
+	uint32_t n_rects = 0;
+	napi_get_array_length(env, argv[0], &n_rects);
+
+	for (uint32_t i = 0; i < n_rects; i++)
+	{
+		SDL_FRect sdlrect;
+		napi_value point;
+		napi_get_element(env, argv[0], i, &point);
+		if (sdl3ts_pull_rect(env, point, &sdlrect) != napi_ok)
+			return NULL;
+		SDL_RenderRect(sdlrenderer, &sdlrect);
+	}
+	return NULL;
+}
+
 napi_value sdl3ts_renderer_fillRect(napi_env env, napi_callback_info info)
 {
 	size_t argc = 1;
@@ -95,6 +119,30 @@ napi_value sdl3ts_renderer_fillRect(napi_env env, napi_callback_info info)
 		return NULL;
 
 	SDL_RenderFillRect(sdlrenderer, &sdlrect);
+	return NULL;
+}
+
+napi_value sdl3ts_renderer_fillRects(napi_env env, napi_callback_info info)
+{
+	size_t argc = 1;
+	napi_value argv[1];
+	napi_value renderer;
+	napi_get_cb_info(env, info, &argc, argv, &renderer, NULL);
+	SDL_Renderer *sdlrenderer;
+	napi_unwrap(env, renderer, (void **)&sdlrenderer);
+
+	uint32_t n_rects = 0;
+	napi_get_array_length(env, argv[0], &n_rects);
+
+	for (uint32_t i = 0; i < n_rects; i++)
+	{
+		SDL_FRect sdlrect;
+		napi_value point;
+		napi_get_element(env, argv[0], i, &point);
+		if (sdl3ts_pull_rect(env, point, &sdlrect) != napi_ok)
+			return NULL;
+		SDL_RenderFillRect(sdlrenderer, &sdlrect);
+	}
 	return NULL;
 }
 
@@ -153,8 +201,35 @@ napi_value sdl3ts_renderer_line(napi_env env, napi_callback_info info)
 	napi_get_value_double(env, argv[1], &y1);
 	napi_get_value_double(env, argv[2], &x2);
 	napi_get_value_double(env, argv[3], &y2);
-
+	
 	SDL_RenderLine(sdlrenderer, x1, y1, x2, y2);
+	return NULL;
+}
+
+napi_value sdl3ts_renderer_lines(napi_env env, napi_callback_info info)
+{
+	size_t argc = 4;
+	napi_value argv[4];
+	napi_value renderer;
+	napi_get_cb_info(env, info, &argc, argv, &renderer, NULL);
+	SDL_Renderer *sdlrenderer;
+	napi_unwrap(env, renderer, (void **)&sdlrenderer);
+
+	uint32_t n_points = 0;
+	napi_get_array_length(env, argv[0], &n_points);
+	
+	SDL_Point prev_sdlpoint;
+	for (uint32_t i = 0; i < n_points; i++)
+	{
+		SDL_Point sdlpoint;
+		napi_value point;
+		napi_get_element(env, argv[0], i, &point);
+		if (sdl3ts_pull_point(env, point, &sdlpoint) != napi_ok)
+			return NULL;
+		if (i > 0)
+			SDL_RenderLine(sdlrenderer, prev_sdlpoint.x,prev_sdlpoint.y, sdlpoint.x, sdlpoint.y);
+		prev_sdlpoint = sdlpoint;
+	}
 	return NULL;
 }
 
@@ -224,12 +299,16 @@ napi_value sdl3ts_renderer_init(napi_env env, napi_callback_info info)
 	export_fn("setDrawColorNormal", sdl3ts_renderer_setDrawColorNormal);
 
 	export_fn("drawRect", sdl3ts_renderer_drawRect);
+	export_fn("drawRects", sdl3ts_renderer_drawRects);
+	
 	export_fn("fillRect", sdl3ts_renderer_fillRect);
+	export_fn("fillRects", sdl3ts_renderer_fillRects);
 
 	export_fn("drawPoint", sdl3ts_renderer_drawPoint);
 	export_fn("drawPoints", sdl3ts_renderer_drawPoints);
 	
 	export_fn("line", sdl3ts_renderer_line);
+	export_fn("lines", sdl3ts_renderer_lines);
 #undef export_fn
 
 	return renderer;

@@ -1,6 +1,6 @@
-import * as SDL3 from "../../sdl3";
+import SDL3 from "sdl3ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
@@ -22,15 +22,17 @@ function begin() {
 	texture_width = surface.w;
 	texture_height = surface.h;
 	texture = surface.toTexture();
+	// surface should drop
 }
 begin();
 
 const dst_rect = new SDL3.Rect();
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event) {
-		if (event.type == SDL3.EventType.Quit) break;
+let runLoop = true;
+while (runLoop) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
 	const now = Date.now();
 
@@ -44,7 +46,7 @@ while (true) {
     dst_rect.y = 0;
     dst_rect.w = texture_width;
     dst_rect.h = texture_height;
-    renderer.texture(texture, null, dst_rect);
+    renderer.drawTexture(texture, null, dst_rect);
 
 	renderer.present();
 	await Bun.sleep(1);

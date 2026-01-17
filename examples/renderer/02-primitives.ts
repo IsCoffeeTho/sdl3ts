@@ -24,7 +24,7 @@ while (runLoop) {
 	while ((event = SDL3.pollEvent())) {
 		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
-	
+
 	window.renderer.setDrawColor(33, 33, 33);
 	window.renderer.clear();
 

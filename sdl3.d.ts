@@ -93,7 +93,6 @@ declare module "sdl3ts" {
 			name?: string;
 			width?: number;
 			height?: number;
-
 			fullscreen?: boolean;
 			opengl?: boolean;
 			occluded?: boolean;
@@ -121,7 +120,7 @@ declare module "sdl3ts" {
 			transparent?: boolean;
 			notFocusable?: boolean;
 		});
-		renderer: Renderer;
+		readonly renderer: Renderer;
 	}
 
 	/**
@@ -134,15 +133,30 @@ declare module "sdl3ts" {
 		setDrawColorNormal(r: number, g: number, b: number, a?: number);
 
 		drawRect(rect: Rect);
+		drawRects(rects: Rect[]);
+		
 		fillRect(rect: Rect);
+		fillRects(rects: Rect[]);
 
 		drawPoint(point: Point);
 		drawPoints(points: Point[]);
 
 		line(x1: number, y1: number, x2: number, y2: number);
+		lines(path: Point[]);
 
 		clear();
 		present();
+	}
+	
+	class Texture {
+		
+	}
+	
+	class Surface {
+		static loadPNG(path: string): Surface;
+		w: number;
+		h: number;
+		toTexture(): Texture;
 	}
 
 	enum EventType {

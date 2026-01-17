@@ -5,7 +5,7 @@ SDL3.init({
 });
 
 const window = new SDL3.Window({
-	name: "01 - clear"
+	name: "01 - clear",
 });
 
 // console.log(window);

@@ -6,7 +6,7 @@
 	"types": "sdl3.d.ts",
 	"type": "module",
 	"scripts": {
-		"start": "bun run build && bun examples/renderer/02-primitives.ts",
+		"start": "bun run build && bun examples/renderer/06-textures.ts",
 		"build": "bunx node-gyp build"
 	},
 	"devDependencies": {

@@ -134,12 +134,14 @@ declare module "sdl3ts" {
 
 		drawRect(rect: Rect);
 		drawRects(rects: Rect[]);
-		
+
 		fillRect(rect: Rect);
 		fillRects(rects: Rect[]);
 
 		drawPoint(point: Point);
 		drawPoints(points: Point[]);
+
+		drawTexture(texture: Texture, src_rect: Rect | null, dst_rect: Rect);
 
 		line(x1: number, y1: number, x2: number, y2: number);
 		lines(path: Point[]);
@@ -147,11 +149,9 @@ declare module "sdl3ts" {
 		clear();
 		present();
 	}
-	
-	class Texture {
-		
-	}
-	
+
+	class Texture {}
+
 	class Surface {
 		static loadPNG(path: string): Surface;
 		w: number;

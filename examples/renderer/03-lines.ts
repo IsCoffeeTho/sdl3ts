@@ -1,6 +1,6 @@
-import * as SDL3 from "../../src/sdl3";
+import * as SDL3 from "sdl3ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
@@ -22,10 +22,11 @@ const line_points: SDL3.Point[] = [
 	new SDL3.Point(100, 354),
 ];
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event) {
-		if (event.type == SDL3.EventType.Quit) break;
+let runLoop = true;
+while (runLoop) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
 
 	renderer.setDrawColor(100, 100, 100);

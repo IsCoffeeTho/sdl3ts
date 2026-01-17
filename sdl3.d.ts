@@ -2,50 +2,48 @@
  * Simple DirectMedia Layer 3 API
  * ```ts
  * // index.ts
- * import {SDL3} from "sdl3ts";
+ * import SDL3 from "sdl3ts";
  *
- * SDL3.Init({
+ * SDL3.init({
  *   video: true
  * });
  *
  * const win = new SDL3.Window();
- * const rndr = win.renderer;
  *
- * while (true) {
- *   var event = SDL3.PollEvent();
- *   if (event) {
+ * let done = false;
+ * while (!done) {
+ *   var event;
+ *   while ((event = SDL3.pollEvent())) {
  *     if (event.type == SDL3.EventType.Quit)
- *       break;
+ *       done = true;
  *   }
  *
- *   window.renderer.setDrawColor(0, 0, 0);
- *   window.renderer.clear();
+ *   // Do game logic, etc.
  *
- *   window.renderer.present();
+ *   win.renderer.present();
  *   await Bun.sleep(1);
  * }
  * ```
  */
-declare module "SDL3" {
+declare module "sdl3ts" {
 	/**
 	 * Initialization flags for
 	 * {@linkcode init}`(options: InitFlags)` and/or
 	 * {@linkcode initSubSystem}`(options: InitFlags)`
 	 */
 	type InitFlags = {
-		/** `audio` implies `events` */
 		audio?: boolean;
-		/** `video` implies `events`, should be initialized on the main thread. */
+
 		video?: boolean;
-		/** `joystick` implies `events` */
+
 		joystick?: boolean;
 		haptic?: boolean;
-		/** `gamepad` implies `joystick` */
+
 		gamepad?: boolean;
 		events?: boolean;
-		/** `sensor` implies `events` */
+
 		sensor?: boolean;
-		/** `camera` implies `events` */
+
 		camera?: boolean;
 	};
 	/**
@@ -72,21 +70,225 @@ declare module "SDL3" {
 	 * @see {@linkcode InitFlags}
 	 */
 	function quitSubSystem(options: InitFlags): void;
-	
-	enum EventType {
-		
+
+	class Rect {
+		constructor(x?: number, y?: number, w?: number, h?: number);
+		x: number;
+		y: number;
+		w: number;
+		h: number;
 	}
-	
-	type CommonEvent<T extends EventType> = {
-		type: T,
-		name: EventType[T],
-		timestamp: bigint,
-	};
-	
-	type Event = ;
-	
+
+	class Point {
+		constructor(x?: number, y?: number);
+		x: number;
+		y: number;
+	}
+
 	/**
-	 * Poll for currently pending events.
+	 * Create a window with the specified dimensions and settings.
 	 */
-	function PollEvent(): Event;
+	class Window {
+		constructor(options?: {
+			name?: string;
+			width?: number;
+			height?: number;
+
+			fullscreen?: boolean;
+			opengl?: boolean;
+			occluded?: boolean;
+			hidden?: boolean;
+			borderless?: boolean;
+			resizable?: boolean;
+			minimized?: boolean;
+			maximised?: boolean;
+			mouseGrabbed?: boolean;
+			inputFocus?: boolean;
+			mouseFocus?: boolean;
+			external?: boolean;
+			modal?: boolean;
+			highPixelDensity?: boolean;
+			mouseCaptured?: boolean;
+			mouseRelativeMode?: boolean;
+			alwaysOnTop?: boolean;
+			utility?: boolean;
+			tooltip?: boolean;
+			popupMenu?: boolean;
+			keyboardGrabbed?: boolean;
+			fillDocument?: boolean;
+			vulkan?: boolean;
+			metal?: boolean;
+			transparent?: boolean;
+			notFocusable?: boolean;
+		});
+		renderer: Renderer;
+	}
+
+	/**
+	 *
+	 */
+	interface Renderer {
+		readonly window: Window;
+
+		setDrawColor(r: number, g: number, b: number, a?: number);
+		setDrawColorNormal(r: number, g: number, b: number, a?: number);
+
+		drawRect(rect: Rect);
+		fillRect(rect: Rect);
+
+		drawPoint(point: Point);
+		drawPoints(points: Point[]);
+
+		line(x1: number, y1: number, x2: number, y2: number);
+
+		clear();
+		present();
+	}
+
+	enum EventType {
+		Quit = 0x100,
+		Terminating,
+		LowMemory,
+		WillEnterBackground,
+		DidEnterBackground,
+		WillEnterForeground,
+		DidEnterForeground,
+		LocaleChanged,
+		SystemThemeChanged,
+		DisplayOrientation = 0x151,
+		DisplayAdded,
+		DisplayRemoved,
+		DisplayMoved,
+		DisplayDesktopModeChanged,
+		DisplayCurrentModeChanged,
+		DisplayContentScaleChanged,
+		DisplayUsableBoundsChanged,
+		DisplayFirst = DisplayOrientation,
+		DisplayLast = DisplayUsableBoundsChanged,
+
+		WindowShown = 0x202,
+		WindowHidden,
+		WindowExposed,
+		WindowMoved,
+		WindowResized,
+		WindowPixelSizeChanged,
+		WindowMetalViewResized,
+		WindowMinimized,
+		WindowMaximized,
+		WindowRestored,
+		WindowMouseEnter,
+		WindowMouseLeave,
+		WindowFocusGained,
+		WindowFocusLost,
+		WindowCloseRequested,
+		WindowHitTest,
+		WindowIccprofChanged,
+		WindowDisplayChanged,
+		WindowDisplayScaleChanged,
+		WindowSafeAreaChanged,
+		WindowOccluded,
+		WindowEnterFullscreen,
+		WindowLeaveFullscreen,
+		WindowDestroyed,
+		WindowHdrStateChanged,
+		WindowFirst = WindowShown,
+		WindowLast = WindowHdrStateChanged,
+
+		KeyDown = 0x300,
+		KeyUp,
+		TextEditing,
+		TextInput,
+		KeymapChanged,
+		KeyboardAdded,
+		KeyboardRemoved,
+		TextEditingCandidates,
+		ScreenKeyboardShown,
+		ScreenKeyboardHidden,
+
+		MouseMotion = 0x400,
+		MouseButtonDown,
+		MouseButtonUp,
+		MouseWheel,
+		MouseAdded,
+		MouseRemoved,
+
+		JoystickAxisMotion = 0x600,
+		JoystickBallMotion,
+		JoystickHatMotion,
+		JoystickButtonDown,
+		JoystickButtonUp,
+		JoystickAdded,
+		JoystickRemoved,
+		JoystickBatteryUpdated,
+		JoystickUpdateComplete,
+
+		GamepadAxisMotion = 0x650,
+		GamepadButtonDown,
+		GamepadButtonUp,
+		GamepadAdded,
+		GamepadRemoved,
+		GamepadRemapped,
+		GamepadTouchpadDown,
+		GamepadTouchpadMotion,
+		GamepadTouchpadUp,
+		GamepadSensorUpdate,
+		GamepadUpdateComplete,
+		GamepadSteamHandleUpdated,
+
+		FingerDown = 0x700,
+		FingerUp,
+		FingerMotion,
+		FingerCanceled,
+
+		PinchBegin = 0x710,
+		PinchUpdate,
+		PinchEnd,
+
+		ClipboardUpdate = 0x900,
+
+		DropFile = 0x1000,
+		DropText,
+		DropBegin,
+		DropComplete,
+		DropPosition,
+
+		AudioDeviceAdded = 0x1100,
+		AudioDeviceRemoved,
+		AudioDeviceFormatChanged,
+
+		SensorUpdate = 0x1200,
+
+		PenProximityIn = 0x1300,
+		PenProximityOut,
+		PenDown,
+		PenUp,
+		PenButtonDown,
+		PenButtonUp,
+		PenMotion,
+		PenAxis,
+
+		CameraDeviceAdded = 0x1400,
+		CameraDeviceRemoved,
+		CameraDeviceApproved,
+		CameraDeviceDenied,
+
+		RenderTargetsReset = 0x2000,
+		RenderDeviceReset,
+		RenderDeviceLost,
+
+		User = 0x8000,
+		UserLast = 0xffff,
+	}
+
+	type CommonEvent<T extends EventType> = {
+		type: T;
+		timestamp: bigint;
+	};
+
+	type QuitEvent = CommonEvent<EventType.Quit>;
+
+	type Event = QuitEvent;
+
+	function pollEvent(): Event | undefined;
 }
+export module "sdl3ts";

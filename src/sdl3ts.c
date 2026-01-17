@@ -1,7 +1,12 @@
 #include "sdl3ts.h"
 
-napi_value export_sdl3ts(napi_env env, napi_value exports) {
+napi_value export_sdl3ts(napi_env env, napi_value exports)
+{
 	export_main(env, exports);
+	export_point(env, exports);
+	export_rect(env, exports);
+	export_events(env, exports);
+	export_window(env, exports);
 	return exports;
 }
 

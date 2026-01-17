@@ -1,16 +1,22 @@
-import { SDL3 } from "../../sdl3.ts";
+import SDL3 from "sdl3ts";
 
 SDL3.init({
 	video: true,
 });
 
-const window = new SDL3.Window();
+const window = new SDL3.Window({
+	name: "01 - clear"
+});
+
+// console.log(window);
+
 const start = Date.now();
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event) {
-		if (event.type == SDL3.EventType.Quit) break;
+let runLoop = true;
+while (runLoop) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
 	const now = (Date.now() - start) / 1000;
 

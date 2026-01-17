@@ -1,52 +1,53 @@
-import * as SDL3 from "../../src/sdl3";
+import SDL3 from "sdl3ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
 const window = new SDL3.Window({
+	name: "02 - primitives",
 	width: 640,
-	height: 480
+	height: 480,
 });
-const renderer = window.renderer;
 
 let rect = new SDL3.Rect();
 
 let points: SDL3.Point[] = [];
 
 for (let i = 0; i < 500; i++) {
-	points[i] = new SDL3.Point((Math.random() * 440) + 100, (Math.random() * 280) + 100);
+	points[i] = new SDL3.Point(Math.random() * 440 + 100, Math.random() * 280 + 100);
 }
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event) {
-		if (event.type == SDL3.EventType.Quit) break;
+let runLoop = true;
+while (runLoop) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) runLoop = false;
 	}
-
-	renderer.setDrawColor(33, 33, 33);
-	renderer.clear();
 	
-	renderer.setDrawColor(0, 0, 255);
+	window.renderer.setDrawColor(33, 33, 33);
+	window.renderer.clear();
+
+	window.renderer.setDrawColor(0, 0, 255);
 	rect.x = rect.y = 100;
-    rect.w = 440;
+	rect.w = 440;
 	rect.h = 280;
-	renderer.fillRect(rect);
-	
-	renderer.setDrawColor(255, 0, 0);
-	renderer.points(points);
-	
-	renderer.setDrawColor(0, 255, 0);
-	rect.x += 30;
-    rect.y += 30;
-    rect.w -= 60;
-    rect.h -= 60;
-	renderer.rect(rect);
-	
-	renderer.setDrawColor(255, 255, 0);
-	renderer.line(0, 0, 640, 480);
-	renderer.line(0, 480, 640, 0);
+	window.renderer.fillRect(rect);
 
-	renderer.present();
+	window.renderer.setDrawColor(255, 0, 0);
+	window.renderer.drawPoints(points);
+
+	window.renderer.setDrawColor(0, 255, 0);
+	rect.x += 30;
+	rect.y += 30;
+	rect.w -= 60;
+	rect.h -= 60;
+	window.renderer.drawRect(rect);
+
+	window.renderer.setDrawColor(255, 255, 0);
+	window.renderer.line(0, 0, 640, 480);
+	window.renderer.line(0, 480, 640, 0);
+
+	window.renderer.present();
 	await Bun.sleep(1);
 }

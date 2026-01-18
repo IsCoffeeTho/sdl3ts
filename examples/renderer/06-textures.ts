@@ -13,9 +13,9 @@ const window = new SDL3.Window({
 });
 const renderer = window.renderer;
 
-var texture_width: number = 0;
-var texture_height: number = 0;
-var texture: SDL3.Texture;
+let texture_width: number = 0;
+let texture_height: number = 0;
+let texture: SDL3.Texture;
 
 {
 	let surface = SDL3.Surface.loadPNG(`${__dirname}/resources/sample.png`);

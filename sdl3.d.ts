@@ -153,7 +153,6 @@ declare module "sdl3ts" {
 	class Texture {}
 
 	class Surface {
-		static loadPNG(path: string): Surface;
 		w: number;
 		h: number;
 		toTexture(): Texture;

@@ -7,23 +7,23 @@ SDL3 Binding library built for the Bun runtime.
 
 ```ts
 // index.ts
-import { SDL3 } from "sdl3ts";
+import SDL3 from "sdl3ts";
 
-SDL3.Init({
+SDL3.init({
 	video: true,
 });
 
 const win = new SDL3.Window();
-const rndr = win.renderer;
 
-while (true) {
-	var event = SDL3.PollEvent();
-	if (event && event.type == SDL3.EventType.Quit) break;
+let done = false;
+while (!done) {
+	var event;
+	while ((event = SDL3.pollEvent())) {
+		if (event.type == SDL3.EventType.Quit) done = true;
+	}
 
-	window.renderer.setDrawColor(0, 0, 0);
-	window.renderer.clear();
-
-	window.renderer.present();
+	// Do game logic, etc.
+	win.renderer.present();
 	await Bun.sleep(1);
 }
 ```

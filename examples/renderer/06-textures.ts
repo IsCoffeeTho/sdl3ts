@@ -11,7 +11,7 @@ const window = new SDL3.Window({
 	width: 640,
 	height: 480,
 });
-const renderer = window.renderer;
+
 
 let texture_width: number = 0;
 let texture_height: number = 0;
@@ -35,8 +35,8 @@ while (runLoop) {
 	}
 	const now = Date.now();
 
-	renderer.setDrawColor(0, 0, 0);
-	renderer.clear();
+	window.renderer.setDrawColor(0, 0, 0);
+	window.renderer.clear();
 
 	const direction = now % 2000 >= 1000 ? 1 : -1;
 	const scale = (((now % 1000) - 500) / 500) * direction;
@@ -45,8 +45,8 @@ while (runLoop) {
 	dst_rect.y = 0;
 	dst_rect.w = texture_width;
 	dst_rect.h = texture_height;
-	renderer.drawTexture(texture, null, dst_rect);
+	window.renderer.drawTexture(texture, null, dst_rect);
 
-	renderer.present();
+	window.renderer.present();
 	await Bun.sleep(1);
 }

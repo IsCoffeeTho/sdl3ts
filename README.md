@@ -1,7 +1,7 @@
 # SDL3ts
 
 > [!warning] Work In Progress  
-> Any version prioir to `1.0.0` is going to be **unready** for production use.
+> Any version prioir to `1.0.0` will be **unready** for production use.
 
 SDL3 Binding library built for the Bun runtime.
 
@@ -23,6 +23,7 @@ while (!done) {
 	}
 
 	// Do game logic, etc.
+
 	win.renderer.present();
 	await Bun.sleep(1);
 }

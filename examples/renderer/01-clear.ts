@@ -8,8 +8,6 @@ const window = new SDL3.Window({
 	name: "01 - clear",
 });
 
-// console.log(window);
-
 const start = Date.now();
 
 let runLoop = true;

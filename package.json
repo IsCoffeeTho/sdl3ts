@@ -7,7 +7,8 @@
 	"type": "module",
 	"scripts": {
 		"start": "bun run build && bun examples/renderer/06-textures.ts",
-		"build": "bunx node-gyp build"
+		"build": "bunx node-gyp build",
+		"wiki": "mkdir wiki",
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
